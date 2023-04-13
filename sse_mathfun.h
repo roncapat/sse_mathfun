@@ -1132,8 +1132,8 @@ static inline double CumSum(double *xa, int N)
  */
 static inline double CumSumSq( double *xa, int n )
 { __m128d vsumsq;
-  register int i, N_4 = n-4+1;
-  register double sumsq = 0;
+  int i, N_4 = n-4+1;
+  double sumsq = 0;
 	for( i = 0 ; i < N_4 ; i+=4, xa+=4 ){
 #ifdef __GNUC__
 		vsumsq = *((__m128d*)&xa[2]) * *((__m128d*)&xa[2]) + *((__m128d*)xa) * *((__m128d*)xa);
@@ -1154,8 +1154,8 @@ static inline double CumSumSq( double *xa, int n )
  */
 static inline double CumSumSumSq( double *xa, int n, double *sumSQ )
 { __m128d vsum, vsumsq;
-  register int i, N_4 = n-4+1;
-  register double sum = 0.0, sumsq = 0;
+  int i, N_4 = n-4+1;
+  double sum = 0.0, sumsq = 0;
 	for( i = 0 ; i < N_4 ; i+=4, xa+=4 ){
 #ifdef __GNUC__
 		vsum = *((__m128d*)&xa[2]) + *((__m128d*)xa);
@@ -1180,8 +1180,8 @@ static inline double CumSumSumSq( double *xa, int n, double *sumSQ )
 	scalar version of CumSum without explicit SSE2 intrinsics
  */
 static inline double scalCumSum( double *xa, int n )
-{ register int i;
-  register double sum = 0.0;
+{ int i;
+  double sum = 0.0;
 	for( i = 0 ; i < n ; i++ ){
 		sum += *xa++;
 	}
@@ -1192,8 +1192,8 @@ static inline double scalCumSum( double *xa, int n )
 	scalar version of CumSumSq without explicit SSE2 intrinsics
  */
 static inline double scalCumSumSq( double *xa, int n )
-{ register int i;
-  register double sumsq = 0.0;
+{ int i;
+  double sumsq = 0.0;
 	for( i = 0 ; i < n ; i++, xa++ ){
 		sumsq += *xa * *xa;
 	}
@@ -1204,8 +1204,8 @@ static inline double scalCumSumSq( double *xa, int n )
 	scalar version of CumSumSumSq without explicit SSE2 intrinsics
  */
 static inline double scalCumSumSumSq( double *xa, int n, double *sumSQ )
-{ register int i;
-  register double sum = 0.0, sumsq = 0.0;
+{ int i;
+  double sum = 0.0, sumsq = 0.0;
 	for( i = 0 ; i < n ; i++, xa++ ){
 		sum += *xa;
 		sumsq += *xa * *xa;
@@ -1243,8 +1243,8 @@ static inline double CumMul(double *xa, int N)
 	computes the cumulative sum of the double array xa[n] using traditional scalar code
  */
 static inline double CumSum( double *xa, int n )
-{ register int i;
-  register double sum = 0.0;
+{ int i;
+  double sum = 0.0;
 	for( i = 0 ; i < n ; i++ ){
 		sum += *xa++;
 	}
@@ -1263,8 +1263,8 @@ static inline double scalCumSum( double *xa, int n )
 	computes the cumulative sum of the squares of the values in double array xa[n] using traditional scalar code
  */
 static inline double CumSumSq( double *xa, int n )
-{ register int i;
-  register double sumsq = 0.0;
+{ int i;
+  double sumsq = 0.0;
 	for( i = 0 ; i < n ; i++, xa++ ){
 		sumsq += *xa * *xa;
 	}
@@ -1283,8 +1283,8 @@ static inline double scalCumSumSq( double *xa, int n )
 	computes the cumulative sum of the values and their squares in double array xa[n] using traditional scalar code
  */
 static inline double CumSumSumSq( double *xa, int n, double *sumSQ )
-{ register int i;
-  register double sum = 0.0, sumsq = 0.0;
+{ int i;
+  double sum = 0.0, sumsq = 0.0;
 	for( i = 0 ; i < n ; i++, xa++ ){
 		sum += *xa;
 		sumsq += *xa * *xa;
@@ -1318,7 +1318,7 @@ static inline double scalCumSumSumSq( double *xa, int n, double *sumSQ )
 	/*!
 		SSE2 'intrinsic' to take the absolute value of a
 	 */
-	static inline v2df _mm_abs_pd( register v2df a )
+	static inline v2df _mm_abs_pd( v2df a )
 	{ const static long long am1[2] = {~0x8000000000000000LL,~0x8000000000000000LL};
 		return _mm_and_pd(a, *((v2df*)am1) );
 	}
@@ -1332,7 +1332,7 @@ static inline double scalCumSumSumSq( double *xa, int n, double *sumSQ )
 	/*!
 		SSE2 'intrinsic' to take the absolute value of a
 	 */
- 	static inline v2df _mm_abs_pd( register v2df a )
+ 	static inline v2df _mm_abs_pd( v2df a )
  	{ const v4si am1 = _mm_set_epi32(0x7fffffff,0xffffffff,0x7fffffff,0xffffffff);
  		return _mm_and_pd(a, *((v2df*)&am1) );
  	}
@@ -1348,7 +1348,7 @@ static inline double scalCumSumSumSq( double *xa, int n, double *sumSQ )
 //		return a;
 	}
 #	endif // i386 or x86_64
- 	static inline v4sf _mm_abs_ps( register v4sf a )
+ 	static inline v4sf _mm_abs_ps( v4sf a )
  	{ const v4si am1 = _mm_set_epi32(0x7fffffff,0x7fffffff,0x7fffffff,0x7fffffff);
  		return _mm_and_ps(a, *((v4sf*)&am1) );
  	}
